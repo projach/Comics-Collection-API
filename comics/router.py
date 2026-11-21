@@ -16,7 +16,7 @@ class SortField(str, Enum):
     publisher = "publisher"
     writer = "writer"
     release_date = "release_date"
-    aquired_date = "aquired_date"
+    acquired_date = "acquired_date"
     cover = "cover"
     comic_shop = "comic_shop"
     price = "price"

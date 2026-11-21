@@ -8,7 +8,7 @@ async def add_comic(comic: ComicCreate, db: asyncpg.Pool, current_user: str):
     async with db.acquire() as conn:
         row = await conn.fetchrow(
             """
-            INSERT INTO comics (issue, name, publisher, writer, release_date, aquired_date, cover, comic_shop, price, user_id)
+            INSERT INTO comics (issue, name, publisher, writer, release_date, acquired_date, cover, comic_shop, price, user_id)
             VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id
             """,
             comic.issue,
@@ -16,7 +16,7 @@ async def add_comic(comic: ComicCreate, db: asyncpg.Pool, current_user: str):
             comic.publisher,
             comic.writer, 
             comic.release_date, 
-            comic.aquired_date, 
+            comic.acquired_date, 
             comic.cover, 
             comic.comic_shop, 
             comic.price, 
@@ -33,7 +33,7 @@ async def update_comic_by_id(
     async with db.acquire() as conn:
         result = await conn.execute(
             """
-            UPDATE comics SET name = $1, issue = $2, publisher = $3, writer = $4, release_date = $5, aquired_date = $6, cover = $7, comic_shop = $8, price = $9
+            UPDATE comics SET name = $1, issue = $2, publisher = $3, writer = $4, release_date = $5, acquired_date = $6, cover = $7, comic_shop = $8, price = $9
             WHERE id = $10 AND user_id = $11
             """,
             comic.name, 
@@ -41,7 +41,7 @@ async def update_comic_by_id(
             comic.publisher, 
             comic.writer, 
             comic.release_date, 
-            comic.aquired_date, 
+            comic.acquired_date, 
             comic.cover, 
             comic.comic_shop, 
             comic.price, 
@@ -53,7 +53,7 @@ async def update_comic_by_id(
 async def get_comic_by_id(id: int, db: asyncpg.Pool, current_user: str):
     async with db.acquire() as conn:
         row = await conn.fetchrow(
-            "SELECT id, issue, name, publisher, writer, release_date, aquired_date, cover, comic_shop, price FROM comics WHERE id = $1 AND user_id = $2",
+            "SELECT id, issue, name, publisher, writer, release_date, acquired_date, cover, comic_shop, price FROM comics WHERE id = $1 AND user_id = $2",
             id, current_user
         )
         if row is None:
@@ -65,7 +65,7 @@ async def get_comic_by_id(id: int, db: asyncpg.Pool, current_user: str):
             publisher=row["publisher"], 
             writer=row["writer"], 
             release_date=row["release_date"], 
-            aquired_date=row["aquired_date"], 
+            acquired_date=row["acquired_date"], 
             cover=row["cover"], 
             comic_shop=row["comic_shop"]
         )
@@ -76,7 +76,7 @@ async def get_comics(sort: str, offset: int, limit: int, db: asyncpg.Pool, curre
         conn: asyncpg.Connection
         logger.debug(f"sort is {sort}")
         rows = await conn.fetch(
-            f"""SELECT id, issue, name, publisher, writer, release_date, aquired_date, cover, comic_shop, price 
+            f"""SELECT id, issue, name, publisher, writer, release_date, acquired_date, cover, comic_shop, price 
             FROM comics WHERE user_id = $1 ORDER BY {sort} OFFSET $2 LIMIT $3""",
             current_user,
             offset, 
@@ -90,7 +90,7 @@ async def get_comics(sort: str, offset: int, limit: int, db: asyncpg.Pool, curre
                 publisher=row["publisher"], 
                 writer=row["writer"], 
                 release_date=row["release_date"], 
-                aquired_date=row["aquired_date"], 
+                acquired_date=row["acquired_date"], 
                 cover=row["cover"],
                 comic_shop=row["comic_shop"],
                 price=row["price"]

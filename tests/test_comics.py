@@ -10,7 +10,7 @@ def comic_payload(**overrides):
             "publisher": "image comics",
             "writer": "Brett Bean",
             "release_date": "2026-08-01",
-            "aquired_date": "2026-10-01",
+            "acquired_date": "2026-10-01",
             "cover": "Cover D Brett Bean I Hate Fairyland Team Up NSFW Variant",
             "comic_shop": "star comics",
             "price" : 3.99
@@ -32,7 +32,7 @@ async def test_create_comics_and_get_comic(client: AsyncClient, make_user):
         "publisher": "image comics",
         "writer": "Brett Bean",
         "release_date": "2026-08-01",
-        "aquired_date": None,
+        "acquired_date": None,
         "cover": "Cover D Brett Bean I Hate Fairyland Team Up NSFW Variant",
         "comic_shop": "star comics",
         "price" : 3.99

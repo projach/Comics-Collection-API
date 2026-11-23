@@ -8,6 +8,8 @@ from users.exceptions import CooldownException, PendingSignupNotFoundException
 from core.database import get_db
 from core.redis_client import get_redis
 from core.email.client import send_email
+from core.auth import get_current_user
+from core.logging import logger
 
 from .models import UserCreate, UserOut, User, VerifyRequest, ResendCodeRequest
 
@@ -89,3 +91,7 @@ async def login(user: User, db=Depends(get_db)):  # noqa: B008
         "token_type": "bearer",
         "expires_at": expires_at
     }
+
+@router.delete(path="/me", status_code=204)
+async def delete_me(db=Depends(get_db), current_user: dict = Depends(get_current_user)):  # noqa: B008
+    await crud.delete_user_by_id(db=db, id=current_user["id"])

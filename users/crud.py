@@ -1,7 +1,9 @@
 import asyncpg
 
-from .models import UserOut
 from core.logging import logger
+
+from .models import UserOut
+
 
 async def create_user(db: asyncpg.Pool, username: str, hashed_password: str, email: str) -> UserOut:
     async with db.acquire() as conn:
